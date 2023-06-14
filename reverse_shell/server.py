@@ -12,6 +12,7 @@ class Server:
         while True: 
             message = conn.recv(1024)
             if message:
+                print(f"\n[CONNECTED TO] {addr}")
                 message = message.decode(self.FORMAT).split()
                 if message == "DISCONNECT":
                     conn.close()
@@ -27,7 +28,7 @@ class Server:
         conn, addr = server_socket.accept()
         threading.Thread(target=self.handle_client, args=(conn, addr)).start()
 
-        print(f"[ACTIVE THREAD COUNT] {threading.active_count()- 1}")
+        print(f"[ACTIVE THREAD COUNT:{threading.active_count()- 1}]")
 
 server = Server()
 server.start_server()
