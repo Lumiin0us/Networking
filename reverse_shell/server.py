@@ -7,17 +7,21 @@ class Server:
         self.PORT = 8000
         self.FORMAT = "utf-8"
         self.ADDR = (self.IP, self.PORT)
+        self.DISCONNECT = "DISCONNECT"
+        self.LENGTH = 64
     
     def handle_client(self, conn, addr):
+        print(f"\n[CONNECTED TO] {addr}")
         while True: 
-            message = conn.recv(1024)
-            if message:
-                print(f"\n[CONNECTED TO] {addr}")
-                message = message.decode(self.FORMAT).split()
-                if message == "DISCONNECT":
-                    conn.close()
+            message_length = conn.recv(self.LENGTH).decode(self.FORMAT)
+            if message_length:
+                message_length = int(message_length)
+                message = conn.recv(message_length).decode(self.FORMAT)
+                if message == self.DISCONNECT:
+                    print("[DISCONNECTING]")
                     break
                 print(message)
+        conn.close()
 
     def start_server(self):
         print("[SERVER IS STARTING...]")
@@ -25,10 +29,14 @@ class Server:
         server_socket.bind(self.ADDR)
         server_socket.listen()
         print(f"[SERVER IS LISTENING AT {self.ADDR}]...")
-        conn, addr = server_socket.accept()
-        threading.Thread(target=self.handle_client, args=(conn, addr)).start()
-
-        print(f"[ACTIVE THREAD COUNT:{threading.active_count()- 1}]")
+        
+        while True: 
+            conn, addr = server_socket.accept()
+            threading.Thread(target=self.handle_client, args=(conn, addr)).start()
+            print(f"[ACTIVE THREAD COUNT: {threading.active_count()- 1}]")
 
 server = Server()
-server.start_server()
+try: 
+    server.start_server()
+except KeyboardInterrupt as e: 
+    print("\n[TERMINATING SERVER...]")
