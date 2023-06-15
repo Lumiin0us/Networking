@@ -1,6 +1,5 @@
-import threading
 import socket
-import sys 
+import threading
 
 class Server:
     def __init__(self):
@@ -36,12 +35,6 @@ class Server:
             threading.Thread(target=self.handle_client, args=(conn, addr)).start()
             print(f"[ACTIVE THREAD COUNT: {threading.active_count()- 1}]")
 
-    def send_commands(self, conn):
-        while True: 
-            command = input()
-            if command == self.DISCONNECT:
-                conn.close()
-                sys.exit()
 server = Server()
 try: 
     server.start_server()
