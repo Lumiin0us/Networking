@@ -16,24 +16,32 @@ player_2 = []
 winning_combos = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"], ["1", "4", "7"], ["2", "5", "8"], ["3", "6", "9"], ["1", "5", "9"], ["3", "5", "7"]]
 
 def user_input(turn, total_turns):
-    if turn % 2 == 0:
+    if turn == 0: 
         player_input_1 = input("Player_1 Enter Position: ")
-        for values in total_turns:
-            print(f"LIST OF CHOSEN VALUES P1 {total_turns}")
-            if values == player_input_1:
-                print("Index already assigned by p2")
-                user_input(turn, total_turns)
         player_1.append(player_input_1)
         total_turns.append(player_input_1)
     else:
-        player_input_2 = input("Player_2 Enter Position: ")
-        for values in total_turns:
-            print(f"LIST OF CHOSEN VALUES P2 {total_turns}")
-            if values == player_input_2:
-                print("Index already assigned by p1")
-                user_input(turn, total_turns)
-        player_2.append(player_input_2)
-        total_turns.append(player_input_2)
+        if turn % 2 == 0:
+            player_input_1 = input("Player_1 Enter Position: ")
+            for values in total_turns:
+                print(f"LIST OF CHOSEN VALUES P1 {total_turns}")
+                if values == player_input_1:
+                    print("Index already assigned by p2")
+                else:
+                    player_1.append(player_input_1)
+                    total_turns.append(player_input_1)
+                    break
+
+        else:
+            player_input_2 = input("Player_2 Enter Position: ")
+            for values in total_turns:
+                print(f"LIST OF CHOSEN VALUES P2 {total_turns}")
+                if values == player_input_2:
+                    print("Index already assigned by p1")
+                else:
+                    player_2.append(player_input_2)
+                    total_turns.append(player_input_2)
+                    break
 
     return player_1, player_2, total_turns
     
