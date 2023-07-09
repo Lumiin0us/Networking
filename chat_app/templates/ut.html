@@ -30,6 +30,12 @@
       font-size: 24px;
       padding: 20px;
     }
+    .red {
+      background-color: crimson;
+    }
+    .blue {
+      background-color: blue;
+    }
   </style>
 </head>
 <body>
@@ -46,5 +52,25 @@
       <div class="grid-item">9</div>
     </div>
   </div>
+  <script>
+    var grid_items = document.getElementsByClassName('grid-item')
+    var color_filled = 0
+    for(let i = 0; i < grid_items.length; i++)
+    {
+      grid_items[i].addEventListener('click', function() 
+      {
+        if(i % 2 == 0)
+        {
+          grid_items[i].classList.toggle('blue')
+          color_filled += 1
+        }
+        else
+        {
+          grid_items[i].classList.toggle('red')
+          color_filled += 1
+        }
+      })
+    }
+  </script>
 </body>
 </html>
