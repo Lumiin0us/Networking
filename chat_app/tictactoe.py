@@ -22,22 +22,20 @@ def user_input(turn, total_turns):
         total_turns.append(player_input_1)
     else:
         if turn % 2 == 0:
-            player_input_1 = input("Player_1 Enter Position: ")
-            for values in total_turns:
-                print(f"LIST OF CHOSEN VALUES P1 {total_turns}")
-                if values == player_input_1:
-                    print("Index already assigned by p2")
+            while True:
+                player_input_1 = input("Player_1 Enter Position: ")
+                if player_input_1 in player_1 or player_input_1 in player_2:
+                    print("Retry")
                 else:
                     player_1.append(player_input_1)
                     total_turns.append(player_input_1)
                     break
 
         else:
-            player_input_2 = input("Player_2 Enter Position: ")
-            for values in total_turns:
-                print(f"LIST OF CHOSEN VALUES P2 {total_turns}")
-                if values == player_input_2:
-                    print("Index already assigned by p1")
+            while True:
+                player_input_2 = input("Player_2 Enter Position: ")
+                if player_input_2 in player_1 or player_input_2 in player_2:
+                    print("Retry")
                 else:
                     player_2.append(player_input_2)
                     total_turns.append(player_input_2)
