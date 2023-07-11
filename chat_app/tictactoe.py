@@ -11,46 +11,74 @@
 
 #possible wins (it all depends on where the first pointer has been placed on the map)
 # [0,1,2] [0,3,6] [0,1,2] [0,1,2] [0,1,2] [0,1,2] [0,1,2] [0,1,2] [0,1,2]
-player_1 = []
-player_2 = []
-turn = 0 
-winning_combos = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"], ["1", "4", "7"], ["2", "5", "8"], ["3", "6", "9"], ["1", "5", "9"], ["3", "5", "7"]]
-
-def user_input(position):
-    global turn
-    if turn == 0: 
-        player_1.append(position)
-    else:
-        if turn % 2 == 0:
-                # if player_input_1 in player_1 or player_input_1 in player_2:
-                #     return 'Retry'
-                # else:
-                player_1.append(position)
-
-        else:
-                # if player_input_2 in player_1 or player_input_2 in player_2:
-                #     print("Retry")
-                # else:
-                player_2.append(position)
-    turn += 1 
-    return player_1, player_2
+class TicTacToe:
+    def __init__(self):
+        self.board = [[0,0,0], [0,0,0], [0,0,0]]
+        self.player_1 = []
+        self.player_2 = []
+        self.turn = 0 
+        self.winning_combos = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"], ["1", "4", "7"], ["2", "5", "8"], ["3", "6", "9"], ["1", "5", "9"], ["3", "5", "7"]]
     
-def check_winner(player_1, player_2):
-    for combinations in winning_combos:
-        if all(x in player_1 for x in combinations):
-            return 1
-        if all(x in player_2 for x in combinations):
-            return 2
-    return 0
+    def reset_board(self):
+        for i in range(3):
+            for j in range(3):
+                self.board[i][j] = 0
+                
+    def check_valid_states(self):
+        valid_states = []
+        for i in range(3):
+            state_checker = []
+            for j in range(3):
+                if self.board[i][j] != 'P1' or self.board[i][j] != 'P2':
+                    state_checker.append(self.board[i][j])
+            valid_states.append(state_checker)
+        return valid_states
 
-def tictactoe(position):
-    player_1, player_2 = user_input(str(position))
-    if len(player_1) >= 3 or len(player_2) >= 3:
-        verdict = check_winner(player_1, player_2)
-        if verdict == 1:
-            return "Player 1 Won"
-        elif verdict == 2:
-            return "Player 2 Won"
-    if len(player_1) + len(player_2) == 9: 
-        return "Match Draw"
+    def update_board_state(self, position):
+        if self.turn == 0: 
+            self.player_1.append(position)
+            if position <= 3:
+                 self.board[0][position - 1] = 'P1'
+            elif position <= 6: 
+                 self.board[1][position - 1] = 'P1'
+            else:
+                 self.board[2][position - 1] = 'P1'
+        else:
+            if self.turn % 2 == 0:
+                self.player_1.append(position)
+                if position <= 3:
+                    self.board[0][position - 1] = 'P1'
+                elif position <= 6: 
+                    self.board[1][position - 1] = 'P1'
+                else:
+                    self.board[2][position - 1] = 'P1'
+            else:
+                    self.player_2.append(position)
+                    if position <= 3:
+                        self.board[0][position - 1] = 'P2'
+                    elif position <= 6: 
+                        self.board[1][position - 1] = 'P2'
+                    else:
+                        self.board[2][position - 1] = 'P2'
+        self.turn += 1 
+        return self.player_1, self.player_2, self.board
+        
+    def check_winner(self):
+        for combinations in self.winning_combos:
+            if all(x in self.player_1 for x in combinations):
+                return 1
+            if all(x in self.player_2 for x in combinations):
+                return 2
+        return 0
+
+    def tictactoe(self, position):
+        self.player_1, self.player_2, self.board = self.update_board_state(str(position))
+        if len(self.player_1) >= 3 or len(self.player_2) >= 3:
+            verdict = self.check_winner(self.player_1, self.player_2)
+            if verdict == 1:
+                return "Player 1 Won"
+            elif verdict == 2:
+                return "Player 2 Won"
+        if len(self.player_1) + len(self.player_2) == 9: 
+            return f"Match Draw {self.board}"
 
