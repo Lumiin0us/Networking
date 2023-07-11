@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <style>
     body {
       display: flex;
@@ -31,45 +33,71 @@
       padding: 20px;
     }
     .red {
-      background-color: crimson;
+      background-color: rgb(242, 71, 106);
     }
     .blue {
-      background-color: blue;
+      background-color: rgb(101, 101, 244);
     }
   </style>
 </head>
 <body>
   <div class="grid-container">
     <div class="grid">
-      <div class="grid-item">1</div>
-      <div class="grid-item">2</div>
-      <div class="grid-item">3</div>
-      <div class="grid-item">4</div>
-      <div class="grid-item">5</div>
-      <div class="grid-item">6</div>
-      <div class="grid-item">7</div>
-      <div class="grid-item">8</div>
-      <div class="grid-item">9</div>
+      <div class="grid-item" data-clicked="false">1</div>
+      <div class="grid-item" data-clicked="false">2</div>
+      <div class="grid-item" data-clicked="false">3</div>
+      <div class="grid-item" data-clicked="false">4</div>
+      <div class="grid-item" data-clicked="false">5</div>
+      <div class="grid-item" data-clicked="false">6</div>
+      <div class="grid-item" data-clicked="false">7</div>
+      <div class="grid-item" data-clicked="false">8</div>
+      <div class="grid-item" data-clicked="false">9</div>
     </div>
   </div>
   <script>
-    var grid_items = document.getElementsByClassName('grid-item')
-    var color_filled = 0
-    for(let i = 0; i < grid_items.length; i++)
-    {
-      grid_items[i].addEventListener('click', function() 
-      {
-        if(i % 2 == 0)
-        {
-          grid_items[i].classList.toggle('blue')
-          color_filled += 1
+    var grid_items = document.getElementsByClassName('grid-item');
+    var color_filled = 0;
+
+    function handleClick(i) {
+      return function(event) {
+        var clickedItem = event.target;
+        var isClicked = clickedItem.getAttribute('data-clicked');
+        if (isClicked === 'true') {
+          return;
         }
-        else
-        {
-          grid_items[i].classList.toggle('red')
-          color_filled += 1
+
+        clickedItem.setAttribute('data-clicked', 'true');
+        if (color_filled % 2 === 0) {
+          color_filled += 1;
+          clickedItem.classList.toggle('blue');
+          // console.log('if', color_filled);
+          sendData(i + 1);
+        } else {
+          color_filled += 1;
+          clickedItem.classList.toggle('red');
+          // console.log('else', color_filled);
+          sendData(i + 1);
         }
-      })
+      };
+    }
+
+    for (let i = 0; i < grid_items.length; i++) {
+      grid_items[i].addEventListener('click', handleClick(i));
+    }
+
+    function sendData(position) {
+      $.ajax({
+        url: '/tictactoe',
+        method: 'POST',
+        data: { 'position': position },
+        success: function(response) {
+          if(response == 'Match Draw' || response == 'Player 1 Won' || response == 'Player 2 Won')
+            alert(response)
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
     }
   </script>
 </body>

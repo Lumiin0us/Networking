@@ -13,35 +13,27 @@
 # [0,1,2] [0,3,6] [0,1,2] [0,1,2] [0,1,2] [0,1,2] [0,1,2] [0,1,2] [0,1,2]
 player_1 = []
 player_2 = []
+turn = 0 
 winning_combos = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"], ["1", "4", "7"], ["2", "5", "8"], ["3", "6", "9"], ["1", "5", "9"], ["3", "5", "7"]]
 
-def user_input(turn, total_turns):
+def user_input(position):
+    global turn
     if turn == 0: 
-        player_input_1 = input("Player_1 Enter Position: ")
-        player_1.append(player_input_1)
-        total_turns.append(player_input_1)
+        player_1.append(position)
     else:
         if turn % 2 == 0:
-            while True:
-                player_input_1 = input("Player_1 Enter Position: ")
-                if player_input_1 in player_1 or player_input_1 in player_2:
-                    print("Retry")
-                else:
-                    player_1.append(player_input_1)
-                    total_turns.append(player_input_1)
-                    break
+                # if player_input_1 in player_1 or player_input_1 in player_2:
+                #     return 'Retry'
+                # else:
+                player_1.append(position)
 
         else:
-            while True:
-                player_input_2 = input("Player_2 Enter Position: ")
-                if player_input_2 in player_1 or player_input_2 in player_2:
-                    print("Retry")
-                else:
-                    player_2.append(player_input_2)
-                    total_turns.append(player_input_2)
-                    break
-
-    return player_1, player_2, total_turns
+                # if player_input_2 in player_1 or player_input_2 in player_2:
+                #     print("Retry")
+                # else:
+                player_2.append(position)
+    turn += 1 
+    return player_1, player_2
     
 def check_winner(player_1, player_2):
     for combinations in winning_combos:
@@ -51,20 +43,14 @@ def check_winner(player_1, player_2):
             return 2
     return 0
 
-def tictactoe():
-    total_turns = []
-    for i in range(9):
-        player_1, player_2, total_turns = user_input(i, total_turns)
-        if len(player_1) >= 3 or len(player_2) >= 3:
-            verdict = check_winner(player_1, player_2)
-            if verdict == 1:
-                print("Player 1 Won")
-                break
-            elif verdict == 2:
-                print("Player 2 Won")
-                break
-        if len(player_1) + len(player_2) == 9: 
-            print("Match Draw")
-            break
+def tictactoe(position):
+    player_1, player_2 = user_input(str(position))
+    if len(player_1) >= 3 or len(player_2) >= 3:
+        verdict = check_winner(player_1, player_2)
+        if verdict == 1:
+            return "Player 1 Won"
+        elif verdict == 2:
+            return "Player 2 Won"
+    if len(player_1) + len(player_2) == 9: 
+        return "Match Draw"
 
-tictactoe()

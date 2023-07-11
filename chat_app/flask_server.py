@@ -1,6 +1,19 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from tictactoe import tictactoe
 
 app = Flask(__name__)
+
+@app.route('/tictactoe', methods=['POST'])
+def handle_tictactoe():
+    position = int(request.form.get('position'))
+    if (position - 1) % 2 == 0:
+        print('[POSITION P1]', position)
+    else:
+        print('[POSITION P2]', position)
+    response = tictactoe(position)
+    if response: 
+        return response
+    return ''
 
 @app.route('/tictactoe')
 def home():
