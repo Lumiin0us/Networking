@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request
-from tictactoe import tictactoe
+from tictactoe import TicTacToe
 
 app = Flask(__name__)
+game = TicTacToe()
 
 @app.route('/tictactoe', methods=['POST'])
 def handle_tictactoe():
@@ -10,7 +11,7 @@ def handle_tictactoe():
         print('[POSITION P1]', position)
     else:
         print('[POSITION P2]', position)
-    response = tictactoe(position)
+    response = game.tictactoe(position)
     if response: 
         return response
     return ''

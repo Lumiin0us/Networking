@@ -36,30 +36,30 @@ class TicTacToe:
 
     def update_board_state(self, position):
         if self.turn == 0: 
-            self.player_1.append(position)
+            self.player_1.append(str(position))
             if position <= 3:
                  self.board[0][position - 1] = 'P1'
             elif position <= 6: 
-                 self.board[1][position - 1] = 'P1'
+                 self.board[1][position - 4] = 'P1'
             else:
-                 self.board[2][position - 1] = 'P1'
+                 self.board[2][position - 7] = 'P1'
         else:
             if self.turn % 2 == 0:
-                self.player_1.append(position)
+                self.player_1.append(str(position))
                 if position <= 3:
                     self.board[0][position - 1] = 'P1'
                 elif position <= 6: 
-                    self.board[1][position - 1] = 'P1'
+                    self.board[1][position - 4] = 'P1'
                 else:
-                    self.board[2][position - 1] = 'P1'
+                    self.board[2][position - 7] = 'P1'
             else:
-                    self.player_2.append(position)
+                    self.player_2.append(str(position))
                     if position <= 3:
                         self.board[0][position - 1] = 'P2'
                     elif position <= 6: 
-                        self.board[1][position - 1] = 'P2'
+                        self.board[1][position - 4] = 'P2'
                     else:
-                        self.board[2][position - 1] = 'P2'
+                        self.board[2][position - 7] = 'P2'
         self.turn += 1 
         return self.player_1, self.player_2, self.board
         
@@ -72,9 +72,9 @@ class TicTacToe:
         return 0
 
     def tictactoe(self, position):
-        self.player_1, self.player_2, self.board = self.update_board_state(str(position))
+        self.player_1, self.player_2, self.board = self.update_board_state(position)
         if len(self.player_1) >= 3 or len(self.player_2) >= 3:
-            verdict = self.check_winner(self.player_1, self.player_2)
+            verdict = self.check_winner()
             if verdict == 1:
                 return "Player 1 Won"
             elif verdict == 2:
